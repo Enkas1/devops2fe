@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devops Sportcenter</title>
+    <link rel="stylesheet" href="/static/style.css">
+
+    <style>
+        .custom-button {
+            float: right;
+            margin-top: -35px;
+            margin-bottom: 0px;
+            padding: 10px 20px;
+            border: none;
+            background-color: #0097b2;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .custom-button2 {
+        float: right;
+        margin-top: -35px;
+        margin-bottom: 0px;
+        padding: 10px 20px;
+        border: none;
+        background-color: #0097b2;
+        color: white;
+        border-radius: 5px;
+
+    }
+    #message {
+            max-width: 600px; /* Text width */
+            margin: 100px auto 50px; /* Placement farther down and in */
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5); /* Shadow effect */
+            text-align: center; /* Text placement center */
+            position: relative; /* Ensure z-index works */
+            z-index: 2; /* Ensure contact form appears above image */
+        }
+        #bookings table {
+            margin: 0 auto;
+            color: white;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #bookings table th,
+        #bookings table td {
+            padding: 10px;
+            border-bottom: 1px solid white;
+        }
+        #bookings table th {
+            font-weight: bold;
+        }
+    </style>
+    
+</head>
+<body>
+
+<!-- Picture middle of screen -->
+<img class="center-image" src="/static/sportcenter.png" alt="Sportcenter">
+
+<!-- Header -->
+<header>
+    <h1>Devops Sportcenter</h1>
+</header>
+<button type="submit" class="custom-button2">Inloggad</button>
+<!-- Navigation -->
+<nav>
+    <a href="/loginindex.html">Start</a>
+    <a href="/loginboka.html">Boka</a>
+    <a href="/logincontact.html">Kontakt</a>
+    <a href="/logincancellation.html">Avbokning</a>
+    <a href="/bookings.html">Mina bokningar</a>
+</nav>
+
+<!-- Main content -->
+<div class="container">
+    <div id="message">
+    <h2 style="color: white;">Mina bokningar</h2>
+    <div id="bookings">
+        {% if bookings %}
+            <table>
+                <tr>
+                    <th style="color: white;">Bokningsnr</th>
+                    <th style="color: white;">Aktivitet</th>
+                    <th style="color: white;">Datum</th>
+                    <th style="color: white;">Tid</th>
+                    <th style="color: white;">Pris</th>
+                    <!-- Lägg till andra kolumnrubriker efter behov -->
+                </tr>
+                <br>
+                {% for booking in bookings %}
+                <tr>
+                    <td style="color: white;">{{ booking[0] }}</td>
+                    <td style="color: white;">{{ booking[1] }}</td>
+                    <td style="color: white;">{{ booking[2] }}</td>
+                    <td style="color: white;">{{ booking[3].strftime("%H:%M") }}</td>
+                    <td style="color: white;">{{ booking[6] }}</td>
+                    <!-- Lägg till andra kolumnvärden efter behov -->
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p style="color: white;">{{ message }}</p>
+        {% endif %}
+    </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <p>&copy; 2024 Devops Sportcenter. Alla rättigheter förbehållna.</p>
+</footer>
+
+</body>
+</html>
