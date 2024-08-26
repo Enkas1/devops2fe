@@ -2,12 +2,12 @@ import psycopg2, random
 import os
 
 conn_details = {
-    "host": os.getenv("DATABASE_HOST", "postgres"),
-    "database": os.getenv("DATABASE_NAME", "postgres"),
-    "user": os.getenv("DATABASE_USER", "postgres"),
-    "password": os.getenv("DATABASE_PASSWORD", "Mydatabase1391"),
-    "port": os.getenv("DATABASE_PORT", "5432")
-}
+    "host": "host.docker.internal",
+    "database": "postgres",
+    "user": "postgres",
+    "password": "Mydatabase1391",
+    "port": '5432'
+} 
 
 def fetch_user_bookings_from_database(email):
     try:
