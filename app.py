@@ -64,7 +64,7 @@ def render_inloggad():
 
 @app.route("/activities.html", methods=["GET"])
 def render_activities():
-    activities = fetch_activities_from_database()
+    activities = fetch_activities_and_prices_from_database()
     if activities:
         return render_template("activities.html", activities=activities)
     else:
@@ -77,10 +77,9 @@ def render_registration():
 @app.route("/contact.html", methods=["POST", "GET"])
 def render_contact():
     if request.method == "POST":
-        # Kontrollera om filen meddelande.txt finns, annars skapas den
-        if not os.path.isfile("meddelanden.txt"):
-            with open("meddelanden.txt", "w", encoding="utf-8"):
-                pass  # Skapar filen om den inte finns
+        email = request.form.get("email")
+        phone = request.form.get("telefon")
+        message = request.form.get("message")
 
         # Regex-mönster för att validera e-postadress
         email_pattern = r"^[\w\.-]+@[\w\.-]+\.\w+$"
@@ -90,24 +89,24 @@ def render_contact():
         message_pattern = r"^(?=\s*\S)(.{3,}(?:\s+\S+){0,299}\s*)$"
 
         # Validera e-postadress
-        if not re.match(email_pattern, request.form["email"]):
-            return render_template("/contact.html", message="<span style='color: white;'>Felaktig e-postadress!</span>")
+        if not re.match(email_pattern, email):
+            return render_template("contact.html", message="Felaktig e-postadress!")
 
         # Validera telefonnummer
-        if not re.match(phone_pattern, request.form["telefon"]):
-            return render_template("/contact.html", message="<span style='color: white;'>Felaktigt telefonnummer, fyll i 10 siffror!</span>")
+        if not re.match(phone_pattern, phone):
+            return render_template("contact.html", message="Felaktigt telefonnummer, fyll i 10 siffror!")
 
         # Validera meddelandet
-        if not re.match(message_pattern, request.form["message"]):
-            return render_template("/contact.html", message="<span style='color: white;'>Meddelandet måste vara minst 3 tecken långt!</span>")
+        if not re.match(message_pattern, message):
+            return render_template("contact.html", message="Meddelandet måste vara minst 3 tecken långt!")
 
-        # Om allt är korrekt, spara datan
-        with open("meddelanden.txt", "a", encoding="utf-8") as file:
-            file.write(f"{request.form['email']}, {request.form['telefon']}, {request.form['message']}\n")
-        return render_template("/contact.html", message="<span style='color: white;'>Tack för ditt mail, vi återkommer inom kort.</span>")
+        # Spara data till databasen
+        if save_message_to_database(email, phone, message):
+            return render_template("contact.html", message="Tack för ditt meddelande, vi återkommer inom kort.")
+        else:
+            return render_template("contact.html", message="Ett fel uppstod vid spara meddelandet. Försök igen senare.")
     else:
         return render_template("contact.html")
-  
 @app.route("/logincancellation.html", methods=["GET", "POST"])
 def render_logincancellation():
     if request.method == "POST":
@@ -124,15 +123,15 @@ def render_logincancellation():
 
 @app.route("/loginboka.html", methods=["GET"])
 def render_loginboka():
-    return render_template("loginboka.html")
+    activities = fetch_activities_and_prices_from_database()
+    return render_template("loginboka.html", activities=activities)
 
 @app.route("/logincontact.html", methods=["GET", "POST"])
 def render_logincontact():
     if request.method == "POST":
-        # Kontrollera om filen meddelande.txt finns, annars skapas den
-        if not os.path.isfile("meddelanden.txt"):
-            with open("meddelanden.txt", "w", encoding="utf-8"):
-                pass  # Skapar filen om den inte finns
+        email = request.form.get("email")
+        phone = request.form.get("telefon")
+        message = request.form.get("message")
 
         # Regex-mönster för att validera e-postadress
         email_pattern = r"^[\w\.-]+@[\w\.-]+\.\w+$"
@@ -142,21 +141,22 @@ def render_logincontact():
         message_pattern = r"^(?=\s*\S)(.{3,}(?:\s+\S+){0,299}\s*)$"
 
         # Validera e-postadress
-        if not re.match(email_pattern, request.form["email"]):
-            return render_template("/logincontact.html", message="<span style='color: white;'>Felaktig e-postadress!</span>")
+        if not re.match(email_pattern, email):
+            return render_template("logincontact.html", message="Felaktig e-postadress!")
 
         # Validera telefonnummer
-        if not re.match(phone_pattern, request.form["telefon"]):
-            return render_template("/logincontact.html", message="<span style='color: white;'>Felaktigt telefonnummer, fyll i 10 siffror!</span>")
+        if not re.match(phone_pattern, phone):
+            return render_template("logincontact.html", message="Felaktigt telefonnummer, fyll i 10 siffror!")
 
         # Validera meddelandet
-        if not re.match(message_pattern, request.form["message"]):
-            return render_template("/logincontact.html", message="<span style='color: white;'>Meddelandet måste vara minst 3 tecken långt!</span>")
+        if not re.match(message_pattern, message):
+            return render_template("logincontact.html", message="Meddelandet måste vara minst 3 tecken långt!")
 
-        # Om allt är korrekt, spara datan
-        with open("meddelanden.txt", "a", encoding="utf-8") as file:
-            file.write(f"{request.form['email']}, {request.form['telefon']}, {request.form['message']}\n")
-        return render_template("/logincontact.html", message="<span style='color: white;'>Tack för ditt mail, vi återkommer inom kort.</span>")
+        # Spara data till databasen
+        if save_message_to_database(email, phone, message):
+            return render_template("logincontact.html", message="Tack för ditt meddelande, vi återkommer inom kort.")
+        else:
+            return render_template("logincontact.html", message="Ett fel uppstod vid spara meddelandet. Försök igen senare.")
     else:
         return render_template("logincontact.html")
 

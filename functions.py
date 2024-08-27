@@ -13,6 +13,19 @@ conn_details = {
     "port": os.getenv("DATABASE_PORT")
 }
 
+def fetch_activities_and_prices_from_database():
+    try:
+        conn = psycopg2.connect(**conn_details)
+        cur = conn.cursor()
+        cur.execute("SELECT activity, price FROM court")
+        activity_prices = cur.fetchall()
+        cur.close()
+        conn.close()
+        return activity_prices
+    except psycopg2.Error as e:
+        print("Error fetching user bookings:", e)
+        return None
+    
 def fetch_user_bookings_from_database(email):
     try:
         conn = psycopg2.connect(**conn_details)
@@ -153,4 +166,17 @@ def admin_add_activity(activity, price):
         return True
     except psycopg2.Error as e:
         print("Error checking login credentials:", e)
-        return False               
+        return False      
+
+def save_message_to_database(email, phone, message):
+    try:
+        conn = psycopg2.connect(**conn_details)
+        cur = conn.cursor()
+        cur.execute("INSERT INTO contact_messages (email, phone, message) VALUES (%s, %s, %s)", (email, phone, message,))
+        conn.commit()
+        cur.close()
+        conn.close()
+        return True
+    except Exception as e:
+        print(f"Error saving message to database: {e}")
+        return False
