@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, url_for, session, redirect, j
 import os
 import re
 import psycopg2
+from datetime import datetime
 from functions import *
 
 app = Flask(__name__)
@@ -124,7 +125,8 @@ def render_logincancellation():
 @app.route("/loginboka.html", methods=["GET"])
 def render_loginboka():
     activities = fetch_activities_and_prices_from_database()
-    return render_template("loginboka.html", activities=activities)
+    today = datetime.now().strftime('%Y-%m-%d')
+    return render_template("loginboka.html", activities=activities, today=today)
 
 @app.route("/logincontact.html", methods=["GET", "POST"])
 def render_logincontact():
