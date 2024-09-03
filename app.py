@@ -3,7 +3,8 @@ import os
 import re
 import psycopg2
 from datetime import datetime
-from devops2_gitops.functions import *
+from functions import *
+
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
