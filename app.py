@@ -5,6 +5,7 @@ import psycopg2
 from datetime import datetime
 from functions import *
 
+
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
@@ -12,38 +13,36 @@ app.secret_key = os.urandom(24)
 def render_index():
     return render_template("index.html")
 
-@app.route("/adminpage.html", methods=["POST", "GET", "PUT"])
+@app.route("/adminpage.html", methods=["GET", "POST"])
 def render_adminpage():
-    activity = request.form.get("activity")
-    price = request.form.get("price")
-    
-    
-    if 'Lägg till en aktivitet' in request.form.values():
-        if admin_add_activity(activity, price):
-            return render_template("adminpage.html", message="Aktivitet tillagd")
-        else:
-            return render_template("adminpage.html", message="Något gick fel med att lägga till aktivitet")
-              
-    elif 'Ta bort aktivitet' in request.form.values():
-        if admin_delete_activity(activity):
-            return render_template("adminpage.html", message="Aktivitet raderad")
-        else:
-            return render_template("adminpage.html", message="Något gick fel med att radera aktiviteten")
-    elif 'Nytt pris' in request.form.values():
-        if admin_change_price(activity, price):
-            return render_template("adminpage.html", message="Priset uppdaterat")
-        else:
-            return render_template("adminpage.html", message="Något gick fel med att uppdatera priset")
+    if request.method == "POST":
+        activity = request.form.get("activity")
+        price = request.form.get("price")
 
-    # Plockar fram meddelande 
+        if 'Lägg till en aktivitet' in request.form.values():
+            if admin_add_activity(activity, price):
+                return render_template("adminpage.html", message="Aktivitet tillagd")
+            else:
+                return render_template("adminpage.html", message="Något gick fel med att lägga till aktivitet")
+        elif 'Ta bort aktivitet' in request.form.values():
+            if admin_delete_activity(activity):
+                return render_template("adminpage.html", message="Aktivitet raderad")
+            else:
+                return render_template("adminpage.html", message="Något gick fel med att radera aktiviteten")
+        elif 'Nytt pris' in request.form.values():
+            if admin_change_price(activity, price):
+                return render_template("adminpage.html", message="Priset uppdaterat")
+            else:
+                return render_template("adminpage.html", message="Något gick fel med att uppdatera priset")
+        
+    # Handle GET requests
     contact_messages = fetch_contact_messages_from_database()
-    print(contact_messages)  
+    print(contact_messages)  # Debugging: print the fetched messages
     if contact_messages:
         return render_template('adminpage.html', contact_messages=contact_messages)
     else:
         return render_template('adminpage.html', contact_messages=[], message="No contact messages available.")
 
-    
 @app.route("/inloggning.html", methods=["POST"])
 def render_inloggning():
     return render_template("inloggning.html")
@@ -161,7 +160,7 @@ def render_logincontact():
         if not re.match(message_pattern, message):
             return render_template("logincontact.html", message="Meddelandet måste vara minst 3 tecken långt!")
 
-        # Plockar fram det sparade meddelandet
+        # Spara data till databasen
         if save_message_to_database(email, phone, message):
             return render_template("logincontact.html", message="Tack för ditt meddelande, vi återkommer inom kort.")
         else:
@@ -288,6 +287,9 @@ def get_user_bookings():
             return render_template("bookings.html", message="Inga bokningar hittades för den aktuella användaren.")
     else:
         return jsonify({"error": "Användaren är inte inloggad"}), 401  # 401 Unauthorized om användaren inte är inloggad
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)   
