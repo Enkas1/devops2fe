@@ -180,3 +180,18 @@ def save_message_to_database(email, phone, message):
     except Exception as e:
         print(f"Error saving message to database: {e}")
         return False
+    
+# Plockar fram meddlande från databsen
+def fetch_contact_messages_from_database():
+    try:
+        conn = psycopg2.connect(**conn_details)
+        cur = conn.cursor()
+        cur.execute("SELECT email, phone, message FROM contact_messages")
+        contact_messages = cur.fetchall()
+        print(contact_messages)  # Debug print
+        cur.close()
+        conn.close()
+        return contact_messages
+    except Exception as e:
+        print(f"Error fetching contact messages: {e}")
+        return None

@@ -35,8 +35,15 @@ def render_adminpage():
         else:
             return render_template("adminpage.html", message="Något gick fel med att uppdatera priset")
 
-    return render_template("adminpage.html", message="Välkommen Admin")
+    # Plockar fram meddelande 
+    contact_messages = fetch_contact_messages_from_database()
+    print(contact_messages)  
+    if contact_messages:
+        return render_template('adminpage.html', contact_messages=contact_messages)
+    else:
+        return render_template('adminpage.html', contact_messages=[], message="No contact messages available.")
 
+    
 @app.route("/inloggning.html", methods=["POST"])
 def render_inloggning():
     return render_template("inloggning.html")
@@ -154,7 +161,7 @@ def render_logincontact():
         if not re.match(message_pattern, message):
             return render_template("logincontact.html", message="Meddelandet måste vara minst 3 tecken långt!")
 
-        # Spara data till databasen
+        # Plockar fram det sparade meddelandet
         if save_message_to_database(email, phone, message):
             return render_template("logincontact.html", message="Tack för ditt meddelande, vi återkommer inom kort.")
         else:
@@ -281,9 +288,6 @@ def get_user_bookings():
             return render_template("bookings.html", message="Inga bokningar hittades för den aktuella användaren.")
     else:
         return jsonify({"error": "Användaren är inte inloggad"}), 401  # 401 Unauthorized om användaren inte är inloggad
-
-
-
 
 if __name__ == "__main__":
     app.run(debug=True)   
