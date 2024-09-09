@@ -11,9 +11,9 @@ ignore =
     E303,  # För många tomma rader
     E111,  # Indragning är inte en multipel av 4
     E117,  # Över-indragen
-    E401,  # Flera imports på en rad
+    E401  # Flera imports på en rad
 
 # Varna för användning av stjärnimporter
 enable-extensions = 
     F403,  # 'from X import *' använd; kan inte upptäcka odefinierade namn
-    F405,  # 'X' kan vara odefinierad eller definierad från stjärnimporter: Y
+    F405  # 'X' kan vara odefinierad eller definierad från stjärnimporter: Y
