@@ -2,4 +2,3 @@ Flask==3.0.0
 psycopg2-binary==2.9.8
 python-dotenv
 flake8
-python3.11-venv
