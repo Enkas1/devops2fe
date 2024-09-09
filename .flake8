@@ -1,19 +1,18 @@
 [flake8]
-# Maximal linjelängd (du kan justera detta om 155 är för kort)
+
 max-line-length = 155
 
-# Ignorera specifika fel
-ignore = 
-    E302,  # Förväntade 2 tomma rader, men hittade 1
-    E261,  # Minst två blanksteg före inline-kommentar
-    E262,  # Inline-kommentar bör börja med '# '
-    E501,  # Rad för lång
-    E303,  # För många tomma rader
-    E111,  # Indragning är inte en multipel av 4
-    E117,  # Över-indragen
-    E401  # Flera imports på en rad
 
-# Varna för användning av stjärnimporter
+ignore = 
+    E302,
+    E261,  
+    E262,  
+    E501,  
+    E303,      
+    E111,  
+    E117,  
+    E401  
+
 enable-extensions = 
-    F403,  # 'from X import *' använd; kan inte upptäcka odefinierade namn
-    F405  # 'X' kan vara odefinierad eller definierad från stjärnimporter: Y
+    F403,
+    F405
