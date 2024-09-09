@@ -10,6 +10,30 @@ pipeline {
                 ])
             }
         }
+        stage('Install Dependencies') {
+            steps {
+                // Installera nödvändiga paket
+                sh '''
+                # Uppdatera paketlistan
+                sudo apt update
+                
+                # Installera Python 3 och pip
+                sudo apt install -y python3 python3-pip
+
+                # Installera och uppdatera pytest
+                sudo pip3 install -U pytest --break-system-packages
+
+                # Installera Docker
+                sudo apt install -y docker.io
+                
+                # Lägg till Jenkins-användare till Docker-gruppen
+                sudo usermod -aG docker jenkins
+                
+                # Installera Docker Compose
+                sudo apt install -y docker-compose
+                '''
+            }
+        }
 
         stage('Setup') {
             steps {

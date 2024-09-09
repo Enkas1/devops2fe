@@ -34,7 +34,7 @@ def render_adminpage():
                 return render_template("adminpage.html", message="Priset uppdaterat")
             else:
                 return render_template("adminpage.html", message="Något gick fel med att uppdatera priset")
-        
+
     # Handle GET requests
     contact_messages = fetch_contact_messages_from_database()
     print(contact_messages)  # Debugging: print the fetched messages
@@ -54,7 +54,7 @@ def render_inloggad():
         password = request.form.get("password")
         session["email"] = email
 
-        if email and password: 
+        if email and password:
             if login_credentials_check(email, password):
                 admin_status = admin_or_not(email)
                 if admin_status:
@@ -171,7 +171,7 @@ def render_logincontact():
 @app.route("/loginindex.html", methods=["GET"])
 def render_loginindex():
     return render_template("loginindex.html")
-    
+
 @app.route("/loginbookingconfirmed.html", methods=["POST", "GET"])
 def de_login_booking():
     activity = request.form.get("activity")
@@ -185,7 +185,7 @@ def de_login_booking():
     email_pattern = r"^[\w\.-]+@[\w\.-]+\.\w+$"
     # Regex-mönster för att validera telefonnummer (exakt 10 siffror)
     phone_pattern = r"^\d{10}$"
-    
+
 
     # Validera e-postadress
     if not re.match(email_pattern, request.form["email"]):
@@ -194,7 +194,7 @@ def de_login_booking():
     # Validera telefonnummer
     if not re.match(phone_pattern, request.form["phone"]):
         return render_template("/loginboka.html", message="<span style='color: white;'>Felaktigt telefonnummer, fyll i 10 siffror!</span>")
-    
+
     if input_data:
         conn = psycopg2.connect(**conn_details)
         cur = conn.cursor()
@@ -204,7 +204,7 @@ def de_login_booking():
             pass
         else:
             return render_template("/loginboka.html", message="<span style='color: white;'>Tiden upptagen, välj en annan tid</span>")
-    
+
     if input_data:
         if booking_confirmed(activity, date, time, email, phone):
             conn = psycopg2.connect(**conn_details)
@@ -224,7 +224,7 @@ def de_login_booking():
         else:
             return render_template("loginbookingconfirmed.html", message="Det gick inte att lägga till bokningsinformationen.")
     else:
-        return render_template("loginbookingconfirmed.html", message="Nödvändiga uppgifter saknas.")  # Vi når aldrig denna???    
+        return render_template("loginbookingconfirmed.html", message="Nödvändiga uppgifter saknas.")  # Vi når aldrig denna???
 
 @app.route("/loginbookingfail.html", methods=["POST", "GET"])
 def render_loginbookingfail():
@@ -243,7 +243,7 @@ def register_user_status():
     password_pattern = r"^(?=\s*\S)(.{5,}(?:\s+\S+){0,30}\s*)$"
     # Regex-mönster för att validera telefonnummer (exakt 10 siffror)
     phone_pattern = r"^\d{10}$"
-    
+
 
     # Validera e-postadress
     if not re.match(email_pattern, request.form["email"]):
@@ -292,4 +292,4 @@ def get_user_bookings():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)   
+    app.run(debug=True)
