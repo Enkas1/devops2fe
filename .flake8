@@ -11,8 +11,10 @@ ignore =
     E303,      
     E111,  
     E117,  
-    E401  
-
-enable-extensions = 
+    E401,
     F403,
-    F405
+    F405,
+    E221,
+    E711,
+    W292,
+    F841  
