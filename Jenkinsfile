@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout([$class: 'GitSCM', 
-                          branches: [[name: '*/dev']],
+                          branches: [[name: '*/pytestBranch']],
                           userRemoteConfigs: [[url: 'https://github.com/Vedmastaren/devops2fe.git']]
                 ])
             }
@@ -17,8 +17,8 @@ pipeline {
                 sh '''
                 python3 -m venv venv
                 . venv/bin/activate
-                pip install --upgrade pip
-                pip install -r requirements.txt
+                pip install --no-cache-dir -r requirements.txt
+                pip list
                 '''
             }
         }
@@ -38,8 +38,7 @@ pipeline {
                 // Kör tester med pytest
                 sh '''
                 . venv/bin/activate
-                pip install psycopg2-binary
-                pytest test_database_functions.py
+                python -m pytest test/test_database_functions.py --maxfail=1 --disable-warnings -q
                 '''
             }
         }
@@ -47,6 +46,7 @@ pipeline {
 
     post {
         always {
+            // Rensa arbetsytan efter varje byggprocess
             cleanWs()
         }
         success {
