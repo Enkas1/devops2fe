@@ -5,7 +5,6 @@ from unittest.mock import MagicMock
 
 
 
-
 @patch('functions.psycopg2.connect')
 def test_fetch_activities_and_prices_from_database(mock_connect):
     mock_activity_prices = [('Tennis', 100), ('Padel', 150)]
@@ -56,6 +55,3 @@ def test_delete_booking_from_database(mock_connect):
 
     # Kontrollera att resultatet är True
     assert result is True
-
-
-    
