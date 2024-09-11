@@ -2,6 +2,7 @@ import pytest
 from functions import fetch_activities_and_prices_from_database, delete_booking_from_database
 from unittest.mock import patch
 from unittest.mock import MagicMock
+from app import app 
 
 
 @patch('functions.psycopg2.connect')
@@ -30,11 +31,9 @@ def test_delete_booking_from_database(mock_connect):
 
     # Mocka cursor och commit-metoder
     mock_cursor = MagicMock()
-    mock_connect.return_value.cursor.return_value = mock_cursor
-
-    # Mocka commit-metoden
     mock_connection = MagicMock()
-    mock_cursor.connection = mock_connection
+    mock_connect.return_value = mock_connection
+    mock_connection.cursor.return_value = mock_cursor
 
     # Simulera att 1 rad tas bort
     mock_cursor.rowcount = 1
@@ -56,8 +55,6 @@ def test_delete_booking_from_database(mock_connect):
 
     # Kontrollera att resultatet är True
     assert result is True
-
-
 
 
     
