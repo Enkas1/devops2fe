@@ -37,6 +37,8 @@ pipeline {
                 // Kör tester med pytest
                 sh '''
                 . venv/bin/activate
+                pwd  # Print working directory
+                ls -l  # List files in the current directory
                 pytest test_database_functions.py
                 '''
             }
