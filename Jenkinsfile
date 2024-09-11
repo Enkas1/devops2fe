@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout([$class: 'GitSCM', 
-                          branches: [[name: '*/pytestBranch']],
+                          branches: [[name: '*/dev']],
                           userRemoteConfigs: [[url: 'https://github.com/Vedmastaren/devops2fe.git']]
                 ])
             }
