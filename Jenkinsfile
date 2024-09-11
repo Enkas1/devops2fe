@@ -38,8 +38,6 @@ pipeline {
                 // Kör tester med pytest
                 sh '''
                 . venv/bin/activate
-                pip freeze | grep psycopg2
-                ls -l
                 python -m pytest test/test_database_functions.py --maxfail=1 --disable-warnings -q
                 '''
             }
