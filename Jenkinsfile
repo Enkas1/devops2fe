@@ -37,7 +37,7 @@ pipeline {
                 // Kör tester med pytest
                 sh '''
                 . venv/bin/activate
-                'pytest --maxfail=1 --disable-warnings -q'
+                pytest test_database_functions.py
                 '''
             }
         }
