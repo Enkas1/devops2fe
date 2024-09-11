@@ -2,7 +2,7 @@ import pytest
 from functions import fetch_activities_and_prices_from_database, delete_booking_from_database
 from unittest.mock import patch
 from unittest.mock import MagicMock
-from app import app 
+
 
 
 @patch('functions.psycopg2.connect')
