@@ -36,9 +36,9 @@ pipeline {
             steps {
                 // Kör tester med pytest
                 sh '''
-                . venv/bin/activate
-                pwd  # Print working directory
-                ls -l  # List files in the current directory
+                source venv/bin/activate
+                pip install psycopg2-binary
+                ls -l
                 pytest test_database_functions.py
                 '''
             }
