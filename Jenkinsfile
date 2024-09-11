@@ -40,8 +40,7 @@ pipeline {
                 . venv/bin/activate
                 pip freeze | grep psycopg2
                 ls -l
-                python -c "import psycopg2; print('psycopg2 is installed')"
-                pytest test/test_database_functions.py --maxfail=1 --disable-warnings -q
+                python -m pytest test/test_database_functions.py --maxfail=1 --disable-warnings -q
                 '''
             }
         }
