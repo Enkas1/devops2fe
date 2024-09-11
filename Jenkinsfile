@@ -37,6 +37,8 @@ pipeline {
                 // Kör tester med pytest
                 sh '''
                 . venv/bin/activate
+                pip freeze | grep psycopg2
+                ls -l
                 pytest test_database_functions.py
                 '''
             }
