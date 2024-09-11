@@ -32,6 +32,7 @@ pipeline {
                 '''
             }
         }
+
         stage('Test') {
             steps {
                 // Kör tester med pytest
@@ -39,7 +40,7 @@ pipeline {
                 . venv/bin/activate
                 pip freeze | grep psycopg2
                 ls -l
-                pytest test/test_database_functions.py
+                pytest test/test_database_functions.py --maxfail=1 --disable-warnings -q
                 '''
             }
         }
@@ -47,6 +48,7 @@ pipeline {
 
     post {
         always {
+            // Rensa arbetsytan efter varje byggprocess
             cleanWs()
         }
         success {
