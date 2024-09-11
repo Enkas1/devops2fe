@@ -36,7 +36,7 @@ pipeline {
             steps {
                 // Kör tester med pytest
                 sh '''
-                source venv/bin/activate
+                . venv/bin/activate
                 pip install psycopg2-binary
                 ls -l
                 pytest test_database_functions.py
