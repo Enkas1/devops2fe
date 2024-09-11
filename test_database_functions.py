@@ -1,7 +1,8 @@
 from functions import fetch_activities_and_prices_from_database, delete_booking_from_database
 from unittest.mock import patch
 from unittest.mock import MagicMock
-import psycopg2 
+import sys
+sys.path.append('.')
 
 
 
