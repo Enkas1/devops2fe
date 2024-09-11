@@ -39,7 +39,7 @@ pipeline {
                 . venv/bin/activate
                 pip freeze | grep psycopg2
                 ls -l
-                pytest test_database_functions.py
+                pytest test/test_database_functions.py
                 '''
             }
         }
