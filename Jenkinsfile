@@ -39,7 +39,7 @@ pipeline {
                 sh '''
                 . venv/bin/activate
                 python -m pytest test/test_database_functions.py --maxfail=1 --disable-warnings -q
-                python3 -m unittest test/test_functions.py
+                python -m unittest test/test_functions.py
                 '''
             }
         }
