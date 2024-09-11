@@ -17,6 +17,7 @@ pipeline {
                 sh '''
                 python3 -m venv venv
                 . venv/bin/activate
+                pip install --upgrade pip
                 pip install -r requirements.txt
                 '''
             }
@@ -38,7 +39,6 @@ pipeline {
                 sh '''
                 . venv/bin/activate
                 pip install psycopg2-binary
-                ls -l
                 pytest test_database_functions.py
                 '''
             }
