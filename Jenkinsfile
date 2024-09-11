@@ -39,10 +39,16 @@ pipeline {
                 sh '''
                 . venv/bin/activate
                 python -m pytest test/test_database_functions.py --maxfail=1 --disable-warnings -q
+                '''
+            }
+            steps {
+                sh '''
+                . venv/bin/activate
                 python -m unittest test/test_functions.py
                 '''
             }
         }
+        
     }
 
     post {
