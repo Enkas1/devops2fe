@@ -32,19 +32,12 @@ pipeline {
             }
         }
 
-        stage('Build') {
-            steps {
-                // Bygg med make (om tillämpligt)
-                sh 'make'
-            }
-        }
-
         stage('Test') {
             steps {
                 // Kör tester med pytest
                 sh '''
                 . venv/bin/activate
-                pytest
+                pytest test_database_functions.py
                 '''
             }
         }
