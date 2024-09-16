@@ -16,6 +16,21 @@
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5); /* Shadow effect */
             text-align: center; /* Text placement center */
         }
+        #activities table {
+            margin: 0 auto;
+            color: white;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #activities table th,
+        #activities table td {
+            padding: 10px;
+            border-bottom: 1px solid white;
+        }
+        #activities table th {
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -34,17 +49,29 @@
         <a href="/activities.html">Våra aktiviteter</a>
         <a href="/contact.html">Kontakt</a>
     </nav>
-
-    <!-- Main content -->
     <div class="container">
         <div id="message">
-            <span style="color: white; font-weight: bold;">{{ message }}</span>
-            <h2 style="color: white;">Aktiviteter</h2>
-            <select name="activities" id="activities">
-                {% for activity in activities %}
-                <option value="{{ activity }}">{{ activity }} 200kr</option>
-                {% endfor %}
-            </select>
+        <div id="activities">
+            {% if activities %}
+                <table>
+                    <tr>
+                        <th style="color: white;">Aktivitet</th>
+                        <th style="color: white;">Pris</th>
+                        <!-- Lägg till andra kolumnrubriker efter behov -->
+                    </tr>
+                    <br>
+                    {% for activity in activities %}
+                    <tr>
+                        <td style="color: white;">{{ activity[0] }}</td>
+                        <td style="color: white;">{{ activity[1] }}</td>
+                        <!-- Lägg till andra kolumnvärden efter behov -->
+                    </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <p style="color: white;">{{ message }}</p>
+            {% endif %}
+        </div>
         </div>
     </div>
     

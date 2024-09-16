@@ -4,6 +4,7 @@ import re
 import psycopg2
 from functions import *
 
+
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
