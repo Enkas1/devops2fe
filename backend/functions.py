@@ -13,6 +13,19 @@ conn_details = {
     "port": os.getenv("DATABASE_PORT")
 }
 
+def fetch_activities_and_prices_from_database():
+    try:
+        conn = psycopg2.connect(**conn_details)
+        cur = conn.cursor()
+        cur.execute("SELECT activity, price FROM court")
+        activity_prices = cur.fetchall()
+        cur.close()
+        conn.close()
+        return activity_prices
+    except psycopg2.Error as e:
+        print("Error fetching user bookings:", e)
+        return None
+
 def fetch_user_bookings_from_database(email):
     try:
         conn = psycopg2.connect(**conn_details)
@@ -25,7 +38,7 @@ def fetch_user_bookings_from_database(email):
     except psycopg2.Error as e:
         print("Error fetching user bookings:", e)
         return None
-    
+
 def booking_confirmed(activity, date, time, email, phone):
     try:
         conn = psycopg2.connect(**conn_details)
@@ -54,7 +67,7 @@ def booking_confirmed(activity, date, time, email, phone):
     except psycopg2.Error as e:
         print("Error inserting booking information:", e)
         return False
-    
+
 def delete_booking_from_database(booking_id): # Funktion som kollar om booking_id finns i databasen och raderar
     try: # Anslutning till databas
         conn = psycopg2.connect(**conn_details) # **conn_details i Python betyder att du "expanderar" dictionaryn conn_details till nyckel-värde-par
@@ -64,7 +77,7 @@ def delete_booking_from_database(booking_id): # Funktion som kollar om booking_i
         rows_deleted = cur.rowcount # Kontrollera antalet rader som påverkades av raderingen
         cur.close() # Stänger cursor eftersom vi inte behöver den mer, frigör resurser.
         conn.close() # Stänger anslutningen till postgreSQL
-        
+
         if rows_deleted > 0:
             return True  # Returnera True om minst en rad togs bort (dvs bokningen fanns)
         else:
@@ -139,7 +152,7 @@ def admin_delete_activity(activity):
         return True
     except psycopg2.Error as e:
         print("Error checking login credentials:", e)
-        return False         
+        return False
 
 def admin_add_activity(activity, price):
     try:
@@ -153,4 +166,32 @@ def admin_add_activity(activity, price):
         return True
     except psycopg2.Error as e:
         print("Error checking login credentials:", e)
-        return False               
+        return False
+
+def save_message_to_database(email, phone, message):
+    try:
+        conn = psycopg2.connect(**conn_details)
+        cur = conn.cursor()
+        cur.execute("INSERT INTO contact_messages (email, phone, message) VALUES (%s, %s, %s)", (email, phone, message,))
+        conn.commit()
+        cur.close()
+        conn.close()
+        return True
+    except Exception as e:
+        print(f"Error saving message to database: {e}")
+        return False
+
+# Plockar fram meddlande från databsen
+def fetch_contact_messages_from_database():
+    try:
+        conn = psycopg2.connect(**conn_details)
+        cur = conn.cursor()
+        cur.execute("SELECT email, phone, message FROM contact_messages")
+        contact_messages = cur.fetchall()
+        print(contact_messages)  # Debug print
+        cur.close()
+        conn.close()
+        return contact_messages
+    except Exception as e:
+        print(f"Error fetching contact messages: {e}")
+        return None

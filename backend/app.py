@@ -8,6 +8,7 @@ from functions import *
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
+
 @app.route("/", methods=["GET", "POST"])
 def render_index():
     return render_template("index.html")
@@ -65,7 +66,8 @@ def render_inloggad():
 
 @app.route("/activities.html", methods=["GET"])
 def render_activities():
-    activities = fetch_activities_from_database()
+    activities = fetch_activities_and_prices_from_database()
+    print(f"Fetched activities: {activities}") 
     if activities:
         return render_template("activities.html", activities=activities)
     else:
@@ -285,4 +287,4 @@ def get_user_bookings():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)   
+    app.run(host="0.0.0.0", port=5000)  

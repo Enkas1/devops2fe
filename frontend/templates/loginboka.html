@@ -92,11 +92,9 @@
             <label for="activity" style="font-weight: bold; color: white;">Välj sport:</label>
             <br>
             <select name="activity" class="text-input">
-                <option value="Padel">Padel 200kr</option>
-                <option value="Tennis">Tennis 200kr</option>
-                <option value="Handboll">Handboll 200kr</option>
-                <option value="Fotboll">Fotboll 200kr</option>
-                <option value="Badminton">Badminton 200kr</option>
+                {% for activity, price in activities %}
+                    <option value="{{ activity }}">{{ activity }} {{ price }}kr</option>
+                {% endfor %}
             </select>
             <br> <!-- Newline -->
             <br>
@@ -108,6 +106,7 @@
                         name="date"
                         id="date"
                         class="formbold-form-input"
+                        min="{{ today }}"
                     />
                 </div>
             </div>
